@@ -1,8 +1,10 @@
 var camera, scene, renderer, sun, earth, angle = 0,
-    clock, control;
+    clock, control,stop = false;
 
 init();
 animate();
+
+var keyboard = new THREEx.KeyboardState();
 
 function init() {
     clock = new THREE.Clock();
@@ -66,6 +68,8 @@ function init() {
     control = new THREE.OrbitControls(camera, renderer.domElement);
     document.body.appendChild(renderer.domElement);
     window.addEventListener('resize', onWindowResize, false);
+    document.getElementById('bgm').play();
+    
 }
 
 function onWindowResize() {
@@ -75,13 +79,21 @@ function onWindowResize() {
 }
 
 function animate() {
+
+
     control.update();
     requestAnimationFrame(animate);
     render();
+    
 }
 
 function render() {
-    angle = clock.getElapsedTime();
+
+    if(stop)
+       return;
+
+    angle +=0.013789697;
+    // console.log(clock.getElapsedTime());
 
     earth.position.set(80 * Math.cos(angle), 0, -80 * Math.sin(angle));
     earth.rotation.y = angle;
@@ -90,8 +102,21 @@ function render() {
     moon.position.set(20 * Math.cos(angle2), 0, -20 * Math.sin(angle2));
     moon.rotation.y = angle2;
 
-     renderer.autoClear = false;
-            renderer.clear();
+    renderer.autoClear = false;
+    renderer.clear();
     renderer.render(backgroundScene , backgroundCamera );
     renderer.render(scene, camera);
 }
+
+keyboard.domElement.addEventListener('keydown', function(event){
+        if( keyboard.eventMatches(event, 's') ) {
+            if(stop){
+                stop = false;
+                document.getElementById('bgm').play();
+            }else{
+                stop = true;
+                document.getElementById('bgm').pause();
+            }
+            //console.log("s");
+        }
+})
