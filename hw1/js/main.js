@@ -99,7 +99,7 @@ function render() {
     earth.position.set(80 * Math.cos(angle/365), 0, -80 * Math.sin(angle/365));//earth's Revolution 
     earth.rotation.y = angle;// earth's rotation
 
-    angle2 = angle / 30;
+    angle2 = angle /365 * 30;
     moon.position.set(20 * Math.cos(angle2), 0, -20 * Math.sin(angle2));//moon's Revolution 
     moon.rotation.y = angle2;// moon's rotation = earth's Revolution
 
