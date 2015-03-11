@@ -14,7 +14,7 @@ function init() {
     camera.position.z = 500;
     scene.add(camera);
 
-    sun = new THREE.Mesh(new THREE.SphereGeometry(20),
+    sun = new THREE.Mesh(new THREE.SphereGeometry(40),
     new THREE.MeshBasicMaterial({
         // wireframe: true,
         map: THREE.ImageUtils.loadTexture('img/sun2.jpg')
@@ -53,9 +53,9 @@ function init() {
     backgroundScene.add(backgroundMesh );
 
 
-    var gridXZ = new THREE.GridHelper(100, 10);
-    gridXZ.setColors(new THREE.Color(0xff0000), new THREE.Color(0xffffff));
-    scene.add(gridXZ);
+    // var gridXZ = new THREE.GridHelper(100, 10);
+    // gridXZ.setColors(new THREE.Color(0xff0000), new THREE.Color(0xffffff));
+    // scene.add(gridXZ);
 
     light = new THREE.PointLight(0xffffff);
     light.position.set(100, 300, 200);
@@ -92,15 +92,16 @@ function render() {
     if(stop)
        return;
 
-    angle +=0.013789697;
+    angle +=0.00277777778;// ~= 1/360
+    angle %=360;
     // console.log(clock.getElapsedTime());
 
-    earth.position.set(80 * Math.cos(angle), 0, -80 * Math.sin(angle));
-    earth.rotation.y = angle;
+    earth.position.set(80 * Math.cos(angle), 0, -80 * Math.sin(angle));//earth's Revolution 
+    earth.rotation.y = angle;// earth's rotation
 
-    angle2 = angle / 12;
-    moon.position.set(20 * Math.cos(angle2), 0, -20 * Math.sin(angle2));
-    moon.rotation.y = angle2;
+    angle2 = angle / 30;
+    moon.position.set(20 * Math.cos(angle2), 0, -20 * Math.sin(angle2));//moon's Revolution 
+    moon.rotation.y = angle;// moon's rotation = earth's Revolution
 
     renderer.autoClear = false;
     renderer.clear();
