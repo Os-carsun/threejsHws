@@ -1,5 +1,5 @@
 var camera, scene, renderer, sun, earth, angle = 0,
-    clock, control,stop = false;
+    clock, control,stop = false,speedup=1;
 
 init();
 animate();
@@ -53,9 +53,9 @@ function init() {
     backgroundScene.add(backgroundMesh );
 
 
-    // var gridXZ = new THREE.GridHelper(100, 10);
-    // gridXZ.setColors(new THREE.Color(0xff0000), new THREE.Color(0xffffff));
-    // scene.add(gridXZ);
+    var gridXZ = new THREE.GridHelper(100, 10);
+    gridXZ.setColors(new THREE.Color(0xff0000), new THREE.Color(0xffffff));
+    scene.add(gridXZ);
 
     light = new THREE.PointLight(0xffffff);
     light.position.set(100, 300, 200);
@@ -93,15 +93,15 @@ function render() {
        return;
 
     angle +=Math.PI/180;// ~= PI/180
-    angle %=180;
+    // angle %=180;
     // console.log(clock.getElapsedTime());
 
-    earth.position.set(80 * Math.cos(angle/365), 0, -80 * Math.sin(angle/365));//earth's Revolution 
-    earth.rotation.y = angle;// earth's rotation
+    earth.position.set(80 * Math.cos(angle/365*speedup), 0, -80 * Math.sin(angle/365*speedup));//earth's Revolution 
+    earth.rotation.y = angle*speedup;// earth's rotation
 
-    angle2 = angle /365 * 30;
-    moon.position.set(20 * Math.cos(angle2), 0, -20 * Math.sin(angle2));//moon's Revolution 
-    moon.rotation.y = angle2;// moon's rotation = earth's Revolution
+    angle2 = angle /365 * 30*speedup;
+    moon.position.set(20 * Math.cos(angle2*speedup), 0, -20 * Math.sin(angle2*speedup));//moon's Revolution 
+    moon.rotation.y = angle/365*speedup;// moon's rotation = earth's Revolution
 
     renderer.autoClear = false;
     renderer.clear();
@@ -118,6 +118,24 @@ keyboard.domElement.addEventListener('keydown', function(event){
                 stop = true;
                 document.getElementById('bgm').pause();
             }
+            //console.log("s");
+        }
+        if( keyboard.eventMatches(event, 'u') ) {
+            if(speedup<=50){
+                speedup +=1;
+            }else{
+                speedup = 20;
+            }
+            document.getElementById('speed').textContent=speedup+"x";
+            //console.log("s");
+        }
+        if( keyboard.eventMatches(event, 'd') ) {
+            if(speedup>1){
+                speedup -=1;
+            }else{
+                speedup = 1;
+            }
+            document.getElementById('speed').textContent=speedup+"x";
             //console.log("s");
         }
 })
