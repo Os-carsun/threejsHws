@@ -53,9 +53,9 @@ function init() {
     backgroundScene.add(backgroundMesh );
 
 
-    var gridXZ = new THREE.GridHelper(100, 10);
-    gridXZ.setColors(new THREE.Color(0xff0000), new THREE.Color(0xffffff));
-    scene.add(gridXZ);
+    // var gridXZ = new THREE.GridHelper(100, 10);
+    // gridXZ.setColors(new THREE.Color(0xff0000), new THREE.Color(0xffffff));
+    // scene.add(gridXZ);
 
     light = new THREE.PointLight(0xffffff);
     light.position.set(100, 300, 200);
