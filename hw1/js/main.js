@@ -92,8 +92,8 @@ function render() {
     if(stop)
        return;
 
-    angle +=0.00277777778;// ~= 1/360
-    angle %=360;
+    angle +=Math.PI/180;// ~= PI/180
+    angle %=180;
     // console.log(clock.getElapsedTime());
 
     earth.position.set(80 * Math.cos(angle), 0, -80 * Math.sin(angle));//earth's Revolution 
