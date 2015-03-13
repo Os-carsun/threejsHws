@@ -97,7 +97,7 @@ function render() {
     // console.log(clock.getElapsedTime());
 
     earth.position.set(80 * Math.cos(angle*speedup), 0, -80 * Math.sin(angle*speedup));//earth's Revolution 
-    earth.rotation.y = angle 365 *speedup;// earth's rotation
+    earth.rotation.y = angle  * 365 *speedup;// earth's rotation
 
     angle2 = angle *12 * speedup;
     moon.position.set(20 * Math.cos(angle2*speedup), 0, -20 * Math.sin(angle2*speedup));//moon's Revolution 
