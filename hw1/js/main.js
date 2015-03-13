@@ -96,12 +96,12 @@ function render() {
     // angle %=180;
     // console.log(clock.getElapsedTime());
 
-    earth.position.set(80 * Math.cos(angle/365*speedup), 0, -80 * Math.sin(angle/365*speedup));//earth's Revolution 
+    earth.position.set(80 * Math.cos(angle*speedup), 0, -80 * Math.sin(angle*speedup));//earth's Revolution 
     earth.rotation.y = angle*speedup;// earth's rotation
 
-    angle2 = angle /365 * 30*speedup;
+    angle2 = angle *12 * speedup;
     moon.position.set(20 * Math.cos(angle2*speedup), 0, -20 * Math.sin(angle2*speedup));//moon's Revolution 
-    moon.rotation.y = angle/365*speedup;// moon's rotation = earth's Revolution
+    moon.rotation.y = angle2* speedup;// moon's rotation = earth's Revolution
 
     renderer.autoClear = false;
     renderer.clear();
