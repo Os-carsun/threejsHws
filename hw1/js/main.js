@@ -26,13 +26,19 @@ function init() {
         map: THREE.ImageUtils.loadTexture('img/earth2.jpg')
 
     }));
+    fakeEarth = new THREE.Mesh(new THREE.SphereGeometry(10,16,12),
+    new THREE.MeshBasicMaterial({
+        side: THREE.BackSide
+
+    }));
     moon = new THREE.Mesh(new THREE.SphereGeometry(3,16,12),
     new THREE.MeshBasicMaterial({
         // wireframe: true
         map: THREE.ImageUtils.loadTexture('img/moon2.jpg')
     }));
-    earth.add(moon);
+    fakeEarth.add(moon);
     sun.add(earth);
+    scene.add(fakeEarth);
     scene.add(sun);
     //add background image
     var texture = THREE.ImageUtils.loadTexture( 'img/Galaxy-1.jpg' );
@@ -92,16 +98,15 @@ function render() {
     if(stop)
        return;
 
-    angle +=Math.PI/180;// ~= PI/180
-    // angle %=180;
-    // console.log(clock.getElapsedTime());
+    angle +=Math.PI/180 * speedup;// ~= PI/180
 
-    earth.position.set(150 * Math.cos(angle*speedup), 0, -150 * Math.sin(angle*speedup));//earth's Revolution 
-    earth.rotation.y = angle  * 365 *speedup;// earth's rotation
 
-    angle2 = angle *12 * speedup;
-    moon.position.set(30 * Math.cos(angle2*speedup), 0, -30 * Math.sin(angle2*speedup));//moon's Revolution 
-    moon.rotation.y = angle2* speedup;// moon's rotation = earth's Revolution
+    earth.position.set(150 * Math.cos(angle), 0, -150 * Math.sin(angle));//earth's Revolution 
+    earth.rotation.y = angle *60 ;// earth's rotation
+    fakeEarth.position.set(150 * Math.cos(angle), 0, -150 * Math.sin(angle));
+    angle2 = angle*12;
+    moon.position.set(30 * Math.cos(angle2), 0, -30 * Math.sin(angle2));//moon's Revolution 
+    moon.rotation.y = angle2;
 
     renderer.autoClear = false;
     renderer.clear();
@@ -121,17 +126,17 @@ keyboard.domElement.addEventListener('keydown', function(event){
             //console.log("s");
         }
         if( keyboard.eventMatches(event, 'u') ) {
-            if(speedup<=50){
-                speedup +=1;
+            if(speedup <= 50){
+                speedup += 1;
             }else{
-                speedup = 20;
+                speedup = 1;
             }
             document.getElementById('speed').textContent=speedup+"x";
             //console.log("s");
         }
         if( keyboard.eventMatches(event, 'd') ) {
-            if(speedup>1){
-                speedup -=1;
+            if(speedup >= 1){
+                speedup -= 1;
             }else{
                 speedup = 1;
             }
