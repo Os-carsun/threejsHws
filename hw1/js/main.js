@@ -101,10 +101,10 @@ function render() {
     angle +=Math.PI/180 * speedup;// ~= PI/180
 
 
-    earth.position.set(150 * Math.cos(angle), 0, -150 * Math.sin(angle));//earth's Revolution 
-    earth.rotation.y = angle *60 ;// earth's rotation
-    fakeEarth.position.set(150 * Math.cos(angle), 0, -150 * Math.sin(angle));
-    angle2 = angle*12;
+    earth.position.set(150 * Math.cos(angle/365), 0, -150 * Math.sin(angle/365));//earth's Revolution 
+    earth.rotation.y = angle ;// earth's rotation
+    fakeEarth.position.set(150 * Math.cos(angle/365), 0, -150 * Math.sin(angle/365));
+    angle2 = angle/30;
     moon.position.set(30 * Math.cos(angle2), 0, -30 * Math.sin(angle2));//moon's Revolution 
     moon.rotation.y = angle2;
 
