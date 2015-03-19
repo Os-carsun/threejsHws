@@ -1,4 +1,4 @@
-var camera, scene, renderer,clock, control, frame, door,chips,plank;
+var camera, scene, renderer,clock, control, frame, door,chips,plank,open=false,close=false;
 var cW=1,cH=30,rW=15,rH=1,doorDepth=2;
 var rad=0,radInc=Math.PI/180*-1;
 init();
@@ -27,6 +27,10 @@ function init () {
         bumpMap: THREE.ImageUtils.loadTexture('img/wood1.jpg'),
         color: "#663300"
     });
+    metal = new THREE.MeshPhongMaterial({
+        // bumpMap: THREE.ImageUtils.loadTexture('img/metal.jpg'),
+        color: "#E6CC54"
+    });
 
     var woodSide1 = new THREE.Mesh(columnGeom, wood);
     var woodSide2 = woodSide1.clone();
@@ -44,8 +48,20 @@ function init () {
     //chip
     plank = new THREE.Mesh(new THREE.BoxGeometry(rW-cW/2, cH-doorDepth, doorDepth/2), wood);
     plank.position.set(rW/2*-1+cW/2, cH/2, doorDepth/-4);
+    doorCylinder = new THREE.Mesh(new THREE.CylinderGeometry(0.5/2, 0.5/2, 1, 32 ), metal);
+    vio = doorCylinder.clone();
+    vio2 =vio.clone();
+    vio.position.set((rW-cW/2)/2-0.5/2,cH/2-rH*2,1/2);
+    vio2.position.set((rW-cW/2)/2-0.5/2,cH/-2+rH*2,1/2)
+    doorCylinder.rotation.x=Math.PI/2;
+    doorCylinder.position.set((rW-cW/2)/-2+2,0,1/2);
+    doorknob = new THREE.Mesh(new THREE.SphereGeometry(0.5, 20, 20 ), metal);
+    doorknob.position.set((rW-cW/2)/-2+2,0,1+1/2);
 
-    // doorknob = new THREE.Mesh(new THREE.BoxGeometry(rW-cW/2, cH-doorDepth, doorDepth/2), wood);
+    plank.add(vio);
+    plank.add(vio2);
+    plank.add(doorCylinder);
+    plank.add(doorknob);
     chips.add(plank);
     chips.position.set(rW/2,0,0);
 
@@ -58,6 +74,7 @@ function init () {
 	light = new THREE.PointLight(0xffff00);
     light.position.set(100, 300, 200);
     scene.add(light);
+
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -83,12 +100,54 @@ function animate() {
 }
 function render() {
 
+
+    if(open){
+        if(rad<=Math.PI/2+Math.PI/4){
+            if(radInc<0)
+                radInc*=-1;
+            roll();
+        }else{
+            open = false;
+        }
+    }
+    if(close){
+        if(rad>=0){
+            if(radInc>0)
+                radInc*=-1;
+            roll();
+        }else{
+            close = false;
+            document.getElementById('openAudio').play();
+        }
+    }
     
-    if(rad<=0||rad>=Math.PI/2)radInc*=-1;
-    rad+=radInc;
-    // door.rotation.y = rad;
-    // plank.rotation.y = rad;
+       
     chips.rotation.y = rad;
     renderer.clear();
     renderer.render(scene, camera);
+}
+function roll () {
+    rad+=radInc;
+    chips.rotation.y = rad;
+    console.log(rad);
+    document.getElementById('moveAudio').play();
+    renderer.clear();
+    renderer.render(scene, camera);
+}
+function closeDoor() {
+    if(open){
+        open = false;
+        return;
+    }
+    close = true;
+    
+}
+
+function openDoor() {
+    if(close){
+        close = false;
+        return;
+    }
+    open = true;
+    document.getElementById('closeAudio').play();
 }
