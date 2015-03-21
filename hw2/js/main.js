@@ -1,6 +1,6 @@
 var camera, scene, renderer,clock, control, frame, door,chips,plank,open=false,close=false;
 var cW=1,cH=30,rW=15,rH=1,doorDepth=2;
-var rad=0,radInc=Math.PI/180*-1;
+var rad=-0.01,radInc=Math.PI/180*-1;
 init();
 animate();
 
@@ -51,21 +51,23 @@ function init () {
     doorCylinder = new THREE.Mesh(new THREE.CylinderGeometry(0.5/2, 0.5/2, 1, 32 ), metal);
     vio = doorCylinder.clone();
     vio2 =vio.clone();
-    vio.position.set((rW-cW/2)/2-0.5/2,cH/2-rH*2,1/2);
-    vio2.position.set((rW-cW/2)/2-0.5/2,cH/-2+rH*2,1/2)
+    // vio.position.set((rW-cW/2)/2-0.5/2,cH/2-rH*2,1/2);
+    // vio2.position.set((rW-cW/2)/2-0.5/2,cH/-2+rH*2,1/2)
+    vio.position.set(0,cH/2-rH*2,doorDepth/2+0.25);
+    vio2.position.set(0,cH/-2+rH*2,doorDepth/2+0.25);
     doorCylinder.rotation.x=Math.PI/2;
     doorCylinder.position.set((rW-cW/2)/-2+2,0,1/2);
     doorknob = new THREE.Mesh(new THREE.SphereGeometry(0.5, 20, 20 ), metal);
-    doorknob.position.set((rW-cW/2)/-2+2,0,1+1/2);
+    doorknob.position.set((rW-cW/2)/-2+2,0,1+0.3);
 
-    plank.add(vio);
-    plank.add(vio2);
+    woodSide2.add(vio);
+    woodSide2.add(vio2);
     plank.add(doorCylinder);
     plank.add(doorknob);
     chips.add(plank);
-    chips.position.set(rW/2,0,0);
+    chips.position.set(rW/2+cW/4,0,0);
 
-
+    door.position.set(rW/2,0,0);
 
 	var gridXZ = new THREE.GridHelper(100, 10);
     gridXZ.setColors(new THREE.Color(0xff0000), new THREE.Color(0xffffff));
@@ -108,6 +110,7 @@ function render() {
             roll();
         }else{
             open = false;
+            // document.getElementById('closeAudio').play();
         }
     }
     if(close){
@@ -117,7 +120,7 @@ function render() {
             roll();
         }else{
             close = false;
-            document.getElementById('openAudio').play();
+            // document.getElementById('openAudio').play();
         }
     }
     
@@ -128,9 +131,14 @@ function render() {
 }
 function roll () {
     rad+=radInc;
+    if(rad<=0){
+        document.getElementById('closeAudio').currentTime=2.4  ;
+        document.getElementById('closeAudio').play();
+    }else{
+        // document.getElementById('moveAudio').play();
+    }
     chips.rotation.y = rad;
     console.log(rad);
-    document.getElementById('moveAudio').play();
     renderer.clear();
     renderer.render(scene, camera);
 }
@@ -149,5 +157,6 @@ function openDoor() {
         return;
     }
     open = true;
-    document.getElementById('closeAudio').play();
+    if(rad <= 0.01)
+        document.getElementById('closeAudio').play();
 }
