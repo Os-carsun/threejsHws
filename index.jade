@@ -1,0 +1,19 @@
+doctype html
+html(lang="en")
+head
+	title="	3W3D HW"
+	link(rel="stylesheet" type="text/css" href="css/style.css")
+body
+- var y=2,row=3
+	table
+		-for (var x = 0; x < y; x++)
+			tr
+				td
+					-for (; x < row ; x++)
+						iframe(src="hw"+x+"/hw"+x+".html")
+						a(href="hw"+x+"/hw"+x+".html")="HW"+x
+		if y%row==0
+			tr
+				td
+					iframe(src="hw"+y+"/hw"+y+".html")
+					a(href="hw"+y+"/hw"+y+".html")="HW"+y

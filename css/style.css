@@ -1,0 +1,12 @@
+table {
+  border: 1;
+  border-style:solid;
+}
+tr {
+  border: 1;
+  border-style:solid;
+}
+iframe {
+	width: 400px;
+	height: 400px;
+}
