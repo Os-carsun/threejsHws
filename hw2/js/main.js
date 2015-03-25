@@ -1,6 +1,8 @@
-var camera, scene, renderer,clock, control, frame, door,chips,plank,open=false,close=false;
+var camera, scene, renderer,clock, control, frame, door,chips,plank,open=false,close=true,closeover=true;
 var cW=1,cH=30,rW=15,rH=1,doorDepth=2;
 var rad=-0.01,radInc=Math.PI/180*-1;
+
+var keyboard = new THREEx.KeyboardState();
 init();
 animate();
 
@@ -104,6 +106,7 @@ function render() {
 
 
     if(open){
+        closeover=false;
         if(rad<=Math.PI/2+Math.PI/4){
             if(radInc<0)
                 radInc*=-1;
@@ -119,7 +122,8 @@ function render() {
                 radInc*=-1;
             roll();
         }else{
-            close = false;
+            closeover=true;
+            // close = false;
             // document.getElementById('openAudio').play();
         }
     }
@@ -145,7 +149,7 @@ function roll () {
 function closeDoor() {
     if(open){
         open = false;
-        return;
+        // return;
     }
     close = true;
     
@@ -154,9 +158,21 @@ function closeDoor() {
 function openDoor() {
     if(close){
         close = false;
-        return;
+        // return;
     }
     open = true;
-    if(rad <= 0.01)
+    if(closeover)
         document.getElementById('closeAudio').play();
 }
+keyboard.domElement.addEventListener('keydown', function(event){
+    if( keyboard.eventMatches(event, 's') ) {
+
+        if(close){
+          openDoor();
+          console.log("in Close");
+        }else{
+          closeDoor();
+          console.log("in opne");
+        }
+    }
+})
