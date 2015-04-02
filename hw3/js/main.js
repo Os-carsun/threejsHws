@@ -18,13 +18,13 @@ function init () {
 
     THREE.ImageUtils.crossOrigin = '';
     var colormap = THREE.ImageUtils.loadTexture('img/tire.png');
-    var colormap2 = THREE.ImageUtils.loadTexture('img/lu.jpg');
+    var colormap2 = THREE.ImageUtils.loadTexture('img/lu.png');
 
     tire.left = new THREE.Object3D();
     tire.both = new THREE.Object3D();
     geometry = new THREE.CircleGeometry(10, 30);
 
-    material = new THREE.MeshBasicMaterial({
+    material = new THREE.MeshLambertMaterial({
         map: colormap,
         transparent: true,  // for cut-out texture
         side: THREE.DoubleSide
@@ -32,9 +32,11 @@ function init () {
     var mesh = new THREE.Mesh(geometry, material);
     colormap2.wrapS = colormap2.wrapT = THREE.RepeatWrapping; 
     colormap2.repeat.set( 8, 1 );
+    
     var mesh2 = new THREE.Mesh(new THREE.CylinderGeometry(10, 10, 2, 30, 1, true), // only side
-    new THREE.MeshBasicMaterial({
-        map: colormap2,
+    new THREE.MeshPhongMaterial({
+        bumpMap: colormap2,
+        color:0x00ff00,
         side: THREE.DoubleSide
     }));
     mesh2.rotation.x = Math.PI / 2;
@@ -53,28 +55,37 @@ function init () {
     tire.both.add(tire.right);
     scene.add(tire.both);
 
-    light = new THREE.PointLight(0xffffff);
-    light.position.set(100, 300, 200);
+    light = new THREE.SpotLight(0xffffff,1.5);
+    light.position.set(0, 150, 0);
+    // light.angle=speed.ang;
+    light.exponent=10;
     scene.add(light);
+    light.target = tire.both;
 
-    var geometry = new THREE.PlaneGeometry( 1000, 1000, 1, 1 );
-    var material = new THREE.MeshBasicMaterial( {
+
+
+    var geometry = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight, 1, 1 );
+    
+    var material = new THREE.MeshLambertMaterial( {
         map: THREE.ImageUtils.loadTexture('img/floor.jpg'),
         transparent: true,  // for cut-out texture
         side: THREE.DoubleSide
     });
     var floor = new THREE.Mesh( geometry, material );
     floor.material.side = THREE.DoubleSide;
-    floor.rotation.x = Math.PI/2;
+    floor.rotation.x = -Math.PI/2;
     scene.add( floor );
 
+
+    var amblight = new THREE.AmbientLight( 0x888888 );
+    scene.add( amblight );
     // var gridXZ = new THREE.GridHelper(100, 10);
     // gridXZ.setColors(new THREE.Color(0xff0000), new THREE.Color(0xffffff));
     // scene.add(gridXZ);
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x888888);
+    renderer.setClearColor(0x333333);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -90,6 +101,8 @@ function animate() {
 
     
     controls.update();
+    
+   
     requestAnimationFrame(animate);
     render();
     
