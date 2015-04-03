@@ -60,8 +60,15 @@ function init () {
   tire.left.add(mesh2);
   tire.left.position.set (0,10,0);
   mesh.castShadow=true;
-  // mesh.receiveShadow=true;
+  mesh.receiveShadow=true;
   mesh.customDepthMaterial = new THREE.ShaderMaterial({
+          uniforms: uniforms,
+          vertexShader: vertexShader,
+          fragmentShader: fragmentShader
+      });
+  mesh0.castShadow=true;
+  mesh0.receiveShadow=true;
+  mesh0.customDepthMaterial = new THREE.ShaderMaterial({
           uniforms: uniforms,
           vertexShader: vertexShader,
           fragmentShader: fragmentShader
