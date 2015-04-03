@@ -20,17 +20,29 @@ function init () {
     THREE.ImageUtils.crossOrigin = '';
     var colormap = THREE.ImageUtils.loadTexture('img/tire.png');
     var colormap2 = THREE.ImageUtils.loadTexture('img/lu.png');
-
+    var vertexShader = document.getElementById('vertexShaderDepth').textContent;
+    var fragmentShader = document.getElementById('fragmentShaderDepth').textContent;
+    var uniforms = {
+        texture: {
+            type: "t",
+            value: colormap
+        }
+    };
     tire.left = new THREE.Object3D();
     tire.both = new THREE.Object3D();
     geometry = new THREE.CircleGeometry(10, 30);
 
-    material = new THREE.MeshLambertMaterial({
+    material = new THREE.MeshBasicMaterial({
         map: colormap,
         transparent: true,  // for cut-out texture
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader
     });
     var mesh = new THREE.Mesh(geometry, material);
+
+    mesh
+
     colormap2.wrapS = colormap2.wrapT = THREE.RepeatWrapping; 
     colormap2.repeat.set( 8, 1 );
     
@@ -97,10 +109,20 @@ function init () {
     [].forEach.call(tire.left.children,function(child){
         child.castShadow=true;
         child.receiveShadow=true;
+        child.customDepthMaterial = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader
+        });
     });
     [].forEach.call(tire.right.children,function(child){
         child.castShadow=true;
         child.receiveShadow=true;
+        child.customDepthMaterial = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader
+        });
     });
 
     var amblight = new THREE.AmbientLight( 0x888888 );
