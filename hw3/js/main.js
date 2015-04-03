@@ -139,7 +139,7 @@ function init () {
     renderer.gammaInput = true;
     renderer.gammaOutput = true;
     renderer.shadowMapEnabled = true;
-
+    renderer.shadowMapCullFace = THREE.CullFaceBack;
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
     document.body.appendChild(renderer.domElement);
