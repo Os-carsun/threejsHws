@@ -1,4 +1,4 @@
-var camera, scene, renderer, geometry, material, light, controls;
+var camera, scene, renderer, geometry, material, light, controls,sun;
 
 var tire = { "left":{},"right":{},"both":{} };
 var speed = {"left":-Math.PI/180,"right":-Math.PI/180,"inc":0,"ang":Math.PI/180}
@@ -14,6 +14,7 @@ function init () {
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.z = 500;
+    camera.position.y = 160;
     scene.add(camera);
 
     THREE.ImageUtils.crossOrigin = '';
@@ -48,6 +49,7 @@ function init () {
     tire.left.add(mesh0);
     tire.left.add(mesh2);
     tire.left.position.set (0,10,-10);
+
     tire.right = tire.left.clone();
     tire.right.position.set (0,10,10);
 
@@ -55,16 +57,29 @@ function init () {
     tire.both.add(tire.right);
     scene.add(tire.both);
 
-    light = new THREE.SpotLight(0xffffff,1.5);
-    light.position.set(0, 150, 0);
-    // light.angle=speed.ang;
-    light.exponent=10;
+    var lsphereMaterial = new THREE.MeshBasicMaterial ({color: 0xffff00, wireframe:true});
+    var lsphereGeometry = new THREE.SphereGeometry(5,8,8);
+    sun = new THREE.Mesh (lsphereGeometry, lsphereMaterial);
+    scene.add (sun);
+    sun.position.set (0,150,0);
+    sun.visible = false;
+
+    light = new THREE.SpotLight( 0xffffff, 1.5 );
+    light.position.set( 0,150,0 );
+    light.castShadow = true;
+    light.shadowCameraNear = 200;
+    light.shadowCameraFar = camera.far;
+    light.shadowCameraFov = 50;
+    light.shadowBias = -0.00022;
+    light.shadowDarkness = 0.5;
+    light.shadowMapWidth = 2048;
+    light.shadowMapHeight = 2048;
+    light.exponent = 10;
     scene.add(light);
     light.target = tire.both;
 
 
-
-    var geometry = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight, 1, 1 );
+    var geometry = new THREE.PlaneGeometry( 1000, 1000,30,30 );
     
     var material = new THREE.MeshLambertMaterial( {
         map: THREE.ImageUtils.loadTexture('img/floor.jpg'),
@@ -76,6 +91,17 @@ function init () {
     floor.rotation.x = -Math.PI/2;
     scene.add( floor );
 
+    floor.receiveShadow = true;
+  
+
+    [].forEach.call(tire.left.children,function(child){
+        child.castShadow=true;
+        child.receiveShadow=true;
+    });
+    [].forEach.call(tire.right.children,function(child){
+        child.castShadow=true;
+        child.receiveShadow=true;
+    });
 
     var amblight = new THREE.AmbientLight( 0x888888 );
     scene.add( amblight );
@@ -83,9 +109,14 @@ function init () {
     // gridXZ.setColors(new THREE.Color(0xff0000), new THREE.Color(0xffffff));
     // scene.add(gridXZ);
 
-    renderer = new THREE.WebGLRenderer();
+
+    renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x333333);
+
+    renderer.gammaInput = true;
+    renderer.gammaOutput = true;
+    renderer.shadowMapEnabled = true;
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -138,5 +169,8 @@ keyboard.domElement.addEventListener('keydown', function(event){
         if( keyboard.eventMatches(event, 's') ) {
             speed.inc-=1;
             if(speed.inc===-1)speed.inc=0;
+        }
+        if( keyboard.eventMatches(event, 'l')){
+            sun.visible = !sun.visible;
         }
 })
