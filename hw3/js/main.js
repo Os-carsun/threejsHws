@@ -14,7 +14,7 @@ function init () {
 
   camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
   camera.position.z = 500;
-  camera.position.y = 160;
+  // camera.position.y = 160;
   scene.add(camera);
 
   THREE.ImageUtils.crossOrigin = '';
@@ -35,7 +35,7 @@ function init () {
   material = new THREE.MeshBasicMaterial({
       map: colormap,
       transparent: true,  // for cut-out texture
-      // side: THREE.DoubleSide
+      side: THREE.DoubleSide
   });
   var mesh = new THREE.Mesh(geometry, material);
 
@@ -87,9 +87,11 @@ function init () {
   sun.position.set (0,150,0);
   sun.visible = false;
 
-  light = new THREE.SpotLight( 0xffffff, 1.5 );
+  light = new THREE.SpotLight( 0xffffff, 1.5);
   light.position.set( 0,150,0 );
   light.castShadow = true;
+  light.angle = Math.PI/6;
+  light.exponent = 10;
   light.shadowCameraNear = 200;
   light.shadowCameraFar = camera.far;
   light.shadowCameraFov = 50;
@@ -97,12 +99,11 @@ function init () {
   light.shadowDarkness = 0.5;
   light.shadowMapWidth = 2048;
   light.shadowMapHeight = 2048;
-  light.exponent = 10;
   scene.add(light);
   light.target = tire.both;
 
 
-  var geometry = new THREE.PlaneGeometry( 1000, 1000,30,30 );
+  var geometry = new THREE.PlaneGeometry( 1024, 1024,130,130 );
   
   var material = new THREE.MeshLambertMaterial( {
       map: THREE.ImageUtils.loadTexture('img/floor.jpg'),
@@ -145,11 +146,12 @@ function init () {
 
   renderer = new THREE.WebGLRenderer({antialias: true});
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x333333);
+  renderer.setClearColor(0x3333ee);
 
   renderer.gammaInput = true;
   renderer.gammaOutput = true;
   renderer.shadowMapEnabled = true;
+  renderer.shadowMapType = THREE.PCFshadowMap;
   renderer.shadowMapCullFace = THREE.CullFaceBack;
   controls = new THREE.OrbitControls(camera, renderer.domElement);
 
