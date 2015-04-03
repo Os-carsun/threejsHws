@@ -43,6 +43,7 @@ function init () {
   colormap2.wrapS = colormap2.wrapT = THREE.RepeatWrapping; 
   colormap2.repeat.set( 8, 1 );
   
+<<<<<<< HEAD
   var mesh2 = new THREE.Mesh(new THREE.CylinderGeometry(10, 10, 2, 30, 1, true), // only side
   new THREE.MeshPhongMaterial({
       bumpMap: colormap2,
@@ -146,6 +147,46 @@ function init () {
   controls = new THREE.OrbitControls(camera, renderer.domElement);
 
   document.body.appendChild(renderer.domElement);
+=======
+
+    [].forEach.call(tire.left.children,function(child){
+        child.castShadow=true;
+        child.receiveShadow=true;
+        child.customDepthMaterial = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader
+        });
+    });
+    [].forEach.call(tire.right.children,function(child){
+        child.castShadow=true;
+        child.receiveShadow=true;
+        child.customDepthMaterial = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader
+        });
+    });
+
+    var amblight = new THREE.AmbientLight( 0x888888 );
+    scene.add( amblight );
+    // var gridXZ = new THREE.GridHelper(100, 10);
+    // gridXZ.setColors(new THREE.Color(0xff0000), new THREE.Color(0xffffff));
+    // scene.add(gridXZ);
+
+
+    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x333333);
+
+    renderer.gammaInput = true;
+    renderer.gammaOutput = true;
+    renderer.shadowMapEnabled = true;
+    renderer.shadowMapCullFace = THREE.CullFaceBack;
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+    document.body.appendChild(renderer.domElement);
+>>>>>>> 702fa5b0e04b915fac5249b3998bf568e0dec31e
 }
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
