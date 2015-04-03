@@ -87,23 +87,23 @@ function init () {
   sun.position.set (0,150,0);
   sun.visible = false;
 
-  light = new THREE.SpotLight( 0xffffff, 1.5);
-  light.position.set( 0,150,0 );
+  light = new THREE.SpotLight( 0xffffff, 1.3);
+  light.position.set( 0,300,0 );
   light.castShadow = true;
   light.angle = Math.PI/6;
   light.exponent = 10;
-  light.shadowCameraNear = 200;
-  light.shadowCameraFar = camera.far;
-  light.shadowCameraFov = 50;
-  light.shadowBias = -0.00022;
-  light.shadowDarkness = 0.5;
-  light.shadowMapWidth = 2048;
-  light.shadowMapHeight = 2048;
+  light.shadowCameraNear = 5;
+  light.shadowCameraFar = 4000;
+  light.shadowCameraFov = light.angle / Math.PI*180;
+  // light.shadowBias = -0.00022;
+  // light.shadowDarkness = 0.5;
+  light.shadowMapWidth = 1024;
+  light.shadowMapHeight = 1024;
   scene.add(light);
   light.target = tire.both;
 
-
-  var geometry = new THREE.PlaneGeometry( 1024, 1024,130,130 );
+  // THREE.PlaneGeometry( width, depth, segmentsWidth, segmentsDepth );
+  var geometry = new THREE.PlaneGeometry( 1024, 1024,250,250 );
   
   var material = new THREE.MeshLambertMaterial( {
       map: THREE.ImageUtils.loadTexture('img/floor.jpg'),
