@@ -19,7 +19,7 @@ function init () {
 
   THREE.ImageUtils.crossOrigin = '';
   var colormap = THREE.ImageUtils.loadTexture('img/tire.png');
-  var colormap2 = THREE.ImageUtils.loadTexture('img/lu.png');
+  var colormap2 = THREE.ImageUtils.loadTexture('img/tiret.jpg');
   var vertexShader = document.getElementById('vertexShaderDepth').textContent;
   var fragmentShader = document.getElementById('fragmentShaderDepth').textContent;
   var uniforms = {
@@ -42,12 +42,12 @@ function init () {
 
   colormap2.wrapS = colormap2.wrapT = THREE.RepeatWrapping; 
   colormap2.repeat.set( 8, 1 );
-  
 
+  // THREE.CylinderGeometry( radiusTop, radiusBottom, height, segmentsRadius, segmentsHeight, openEnded );
   var mesh2 = new THREE.Mesh(new THREE.CylinderGeometry(10, 10, 2, 30, 1, true), // only side
   new THREE.MeshPhongMaterial({
       bumpMap: colormap2,
-      color:0x00ff00,
+      color:"#000000",
       side: THREE.DoubleSide
   }));
   mesh2.rotation.x = Math.PI / 2;
@@ -107,7 +107,7 @@ function init () {
   
   var material = new THREE.MeshLambertMaterial( {
       map: THREE.ImageUtils.loadTexture('img/floor.jpg'),
-      transparent: true,  // for cut-out texture
+      // transparent: true,  // for cut-out texture
       side: THREE.DoubleSide
   });
   var floor = new THREE.Mesh( geometry, material );
@@ -137,7 +137,7 @@ function init () {
   //     });
   // });
 
-  var amblight = new THREE.AmbientLight( 0x888888 );
+  var amblight = new THREE.AmbientLight( 0x222222 );
   scene.add( amblight );
   // var gridXZ = new THREE.GridHelper(100, 10);
   // gridXZ.setColors(new THREE.Color(0xff0000), new THREE.Color(0xffffff));
