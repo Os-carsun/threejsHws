@@ -19,7 +19,7 @@ function init () {
 
   THREE.ImageUtils.crossOrigin = '';
   var colormap = THREE.ImageUtils.loadTexture('img/tire.png');
-  var colormap2 = THREE.ImageUtils.loadTexture('img/tiret.jpg');
+  var colormap2 = THREE.ImageUtils.loadTexture('img/tiret2.jpg');
   var vertexShader = document.getElementById('vertexShaderDepth').textContent;
   var fragmentShader = document.getElementById('fragmentShaderDepth').textContent;
   var uniforms = {
@@ -47,7 +47,8 @@ function init () {
   var mesh2 = new THREE.Mesh(new THREE.CylinderGeometry(10, 10, 2, 30, 1, true), // only side
   new THREE.MeshPhongMaterial({
       bumpMap: colormap2,
-      color:"#000000",
+      bumpScale :1,
+      color:"#333333",
       side: THREE.DoubleSide
   }));
   mesh2.rotation.x = Math.PI / 2;
@@ -87,7 +88,7 @@ function init () {
   sun.position.set (0,150,0);
   sun.visible = false;
 
-  light = new THREE.SpotLight( 0xffffff, 1.3);
+  light = new THREE.SpotLight( 0xcccccc, 1.3);
   light.position.set( 0,300,0 );
   light.castShadow = true;
   light.angle = Math.PI/6;
