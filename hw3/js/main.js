@@ -18,7 +18,7 @@ function init () {
   scene.add(camera);
 
   THREE.ImageUtils.crossOrigin = '';
-  var colormap = THREE.ImageUtils.loadTexture('img/tire.png');
+  var colormap = THREE.ImageUtils.loadTexture('img/tire3.png');
   var colormap2 = THREE.ImageUtils.loadTexture('img/tiret2.jpg');
   var vertexShader = document.getElementById('vertexShaderDepth').textContent;
   var fragmentShader = document.getElementById('fragmentShaderDepth').textContent;
@@ -145,7 +145,7 @@ function init () {
   // scene.add(gridXZ);
 
 
-  renderer = new THREE.WebGLRenderer({antialias: true});
+  renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x3333ee);
 
