@@ -31,11 +31,11 @@ function init () {
   tire.left = new THREE.Object3D();
   tire.both = new THREE.Object3D();
   geometry = new THREE.CircleGeometry(10, 30);
-
+  // geometry = new THREE.CylinderGeometry(10, 10, 2, 30, 1, true);
   material = new THREE.MeshBasicMaterial({
       map: colormap,
       transparent: true,  // for cut-out texture
-      side: THREE.DoubleSide
+      // side: THREE.DoubleSide
   });
   var mesh = new THREE.Mesh(geometry, material);
 
@@ -68,12 +68,14 @@ function init () {
           fragmentShader: fragmentShader
       });
   mesh0.castShadow=true;
-  mesh0.receiveShadow=true;
+  // mesh0.receiveShadow=true;
   mesh0.customDepthMaterial = new THREE.ShaderMaterial({
           uniforms: uniforms,
           vertexShader: vertexShader,
           fragmentShader: fragmentShader
       });
+  // mesh.rotation.y = mesh0.rotation.y = 0;
+  mesh.rotation.z = -Math.PI/2;
   tire.right = tire.left.clone();
   tire.right.position.set (0,10,10);
 
@@ -88,7 +90,7 @@ function init () {
   sun.position.set (0,150,0);
   sun.visible = false;
 
-  light = new THREE.SpotLight( 0xcccccc, 1.3);
+  light = new THREE.SpotLight( 0xffffff, 1.5);
   light.position.set( 0,300,0 );
   light.castShadow = true;
   light.angle = Math.PI/6;
@@ -96,8 +98,8 @@ function init () {
   light.shadowCameraNear = 5;
   light.shadowCameraFar = 4000;
   light.shadowCameraFov = light.angle / Math.PI*180;
-  // light.shadowBias = -0.00022;
-  // light.shadowDarkness = 0.5;
+  light.shadowBias = -0.00022;
+  light.shadowDarkness = 0.9;
   light.shadowMapWidth = 1024;
   light.shadowMapHeight = 1024;
   scene.add(light);
@@ -145,7 +147,7 @@ function init () {
   // scene.add(gridXZ);
 
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x3333ee);
 
